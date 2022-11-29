@@ -26,8 +26,14 @@ const reactionSchema = new Schema(
 );
 
 function formatDate(input) {
-  let date = new Date(input);
-  return date.getDay() + "-" + date.getMonth() + "-" + date.getFullYear();
-}
+    let date = new Date(input);
+    return (
+      date.getUTCDate() +
+      "-" +
+      (date.getUTCMonth() + 1) +
+      "-" +
+      date.getFullYear()
+    );
+  }
 
 module.exports = reactionSchema;

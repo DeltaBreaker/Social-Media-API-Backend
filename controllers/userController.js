@@ -1,4 +1,4 @@
-const { User, Thought, Reaction } = require("../models");
+const { User } = require("../models");
 
 module.exports = {
   getUsers(req, res) {
@@ -16,11 +16,10 @@ module.exports = {
   getUser(req, res) {
     User.findOne({ _id: req.params.userID })
       .select("-__v")
-      .lean()
-      .then(async (student) =>
-        !student
+      .then(async (user) =>
+        !user
           ? res.status(404).json({ message: "No user with that ID" })
-          : res.json(student)
+          : res.json(user)
       )
       .catch((err) => {
         console.log(err);
@@ -35,11 +34,12 @@ module.exports = {
   },
 
   updateUser(req, res) {
-    User.findOneAndUpdate({ _id: req.params.userID }, req.body).then(
-      (student) =>
-        !student
-          ? res.status(404).json({ message: "User not found" })
-          : res.json(student)
+    User.findOneAndUpdate({ _id: req.params.userID }, req.body, {
+      new: true,
+    }).then((user) =>
+      !user
+        ? res.status(404).json({ message: "User not found" })
+        : res.json(user)
     );
   },
 
@@ -54,22 +54,24 @@ module.exports = {
   addFriend(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.userID },
-      { $addToSet: { friends: req.body } }
-    ).then((student) =>
-      !student
+      { $addToSet: { friends: req.body } },
+      { new: true }
+    ).then((user) =>
+      !user
         ? res.status(404).json({ message: "User not found" })
-        : res.json(student)
+        : res.json(user)
     );
   },
 
   removeFriend(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.userID },
-      { $pull: { friends: req.params.friendID } }
-    ).then((student) =>
-      !student
+      { $pull: { friends: req.params.friendID } },
+      { new: true }
+    ).then((user) =>
+      !user
         ? res.status(404).json({ message: "User not found" })
-        : res.json(student)
+        : res.json(user)
     );
   },
 };

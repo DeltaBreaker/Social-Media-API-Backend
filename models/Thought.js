@@ -29,7 +29,13 @@ const thoughtSchema = new Schema(
 
 function formatDate(input) {
   let date = new Date(input);
-  return date.getDay() + "-" + date.getMonth() + "-" + date.getFullYear();
+  return (
+    date.getUTCDate() +
+    "-" +
+    (date.getUTCMonth() + 1) +
+    "-" +
+    date.getFullYear()
+  );
 }
 
 thoughtSchema.virtual("reactionCount").get(function () {
