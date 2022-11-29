@@ -34,11 +34,42 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
 
-  updateUser(req, res) {},
+  updateUser(req, res) {
+    User.findOneAndUpdate({ _id: req.params.userID }, req.body).then(
+      (student) =>
+        !student
+          ? res.status(404).json({ message: "User not found" })
+          : res.json(student)
+    );
+  },
 
-  deleteUser(req, res) {},
+  deleteUser(req, res) {
+    User.findOneAndRemove({ _id: req.params.userID }).then((user) => {
+      !user
+        ? res.status(404).json({ message: "That user doesnt exist" })
+        : res.status(404).json({ message: "User deleted" });
+    });
+  },
 
-  addFriend(req, res) {},
+  addFriend(req, res) {
+    User.findOneAndUpdate(
+      { _id: req.params.userID },
+      { $addToSet: { friends: req.body } }
+    ).then((student) =>
+      !student
+        ? res.status(404).json({ message: "User not found" })
+        : res.json(student)
+    );
+  },
 
-  removeFriend(req, res) {},
+  removeFriend(req, res) {
+    User.findOneAndUpdate(
+      { _id: req.params.userID },
+      { $pull: { friends: req.params.friendID } }
+    ).then((student) =>
+      !student
+        ? res.status(404).json({ message: "User not found" })
+        : res.json(student)
+    );
+  },
 };

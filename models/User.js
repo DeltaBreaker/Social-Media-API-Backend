@@ -21,7 +21,12 @@ const userSchema = new Schema(
       validate: validateEmail,
     },
     thoughts: [thoughtSchema],
-    friends: [this],
+    friends: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   {
     toJSON: {
