@@ -17,7 +17,7 @@ This was built in JavaScript using MongoDB and Mongoose to sort and manage user 
 ### Thought
 `/api/thought` - GET, POST, Get all posts or create a new post
 
-`/api/thought` - GET, PUT, DELETE, Get, update, or delete a specific user
+`/api/thought/:thoughtID` - GET, PUT, DELETE, Get, update, or delete a specific user
 
 `/api/thought/:thoughtID/reactions` - POST, Create a reaction to be added to this post
 
